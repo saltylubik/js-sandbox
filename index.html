@@ -274,15 +274,10 @@
         }
 
         function resetValue() {
-            document.getElementById("score").innerHTML = 
-            `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
-            closePopup();
+            location.reload();
         }
 
         document.getElementById("reset").onclick = function() {
-            score.wins = 0;
-            score.losses = 0;
-            score.ties = 0;
             showPopup();
         };
         
