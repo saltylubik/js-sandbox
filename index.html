@@ -92,7 +92,47 @@
             background-color: rgb(93, 93, 93)
         }
 
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: rgb(93, 93, 93);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
 
+        #popup-in{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+        }
+
+        #popup-buttons{
+            margin-top: 20px;
+            gap: 50px;
+        }
+
+        .popup-butt{
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 50%;
+            background-color: rgb(50, 50, 50);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .popup-butt:hover{
+            background-color: rgb(93, 93, 93)
+        }
     </style>
 </head>
 <body>
@@ -126,6 +166,15 @@
             Wins: 0, Losses: 0, Ties: 0
         </div>
         <button id="reset">Reset</button>
+        <div id="popup" class="popup">
+            <div id="popup-in">
+                <p>Are you sure you want to reset the score?</p>
+                <div id="popup-buttons">
+                    <button onclick="resetValue()" class="popup-butt">Ano</button>
+                    <button onclick="closePopup()" class="popup-butt">Ne</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -216,12 +265,25 @@
             updateFun();
         };
 
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function resetValue() {
+            document.getElementById("score").innerHTML = 
+            `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+            closePopup();
+        }
+
         document.getElementById("reset").onclick = function() {
             score.wins = 0;
             score.losses = 0;
             score.ties = 0;
-            document.getElementById("score").innerHTML = 
-            `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+            showPopup();
         };
         
         const updateFun = function() {
