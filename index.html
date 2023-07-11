@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+    <style>
+        body{
+            background-color: black;
+            color: white;
+            font-family: sans-serif;
+            padding-top: 20px;
+        }
+
+        .game{
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column;
+        }
+
+        .icon-button{
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 50%;
+            background-color: rgb(50, 50, 50);
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            margin: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .gesture{
+            height: 50px;
+        }
+
+        .heading{
+            border: 2px solid white;
+            padding: 20px;
+            border-radius: 50px;
+            margin-bottom: 50px;
+            margin-top: 0px;
+            background-color: rgb(50, 50, 50);
+        }
+
+        #result{
+            margin-top: 30px;
+            width: 400px;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 25px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #result-text{
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        #you, #comp{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 50px;
+        }
+
+        #score{
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        #reset{
+            margin-top: 0px;
+            width: 300px;
+            height: 50px;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 30px;
+            background-color: rgb(50, 50, 50);
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            transition: 0.15s;
+        }
+
+        #reset:hover,
+        .icon-button:hover{
+            background-color: rgb(93, 93, 93)
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class = "game">
+        <h1 class="heading">Rock Paper Scissors</h1>
+        <div>
+            <button id="rock" class="icon-button">
+                <img class="gesture" src="Images/Rock.png">
+            </button>
+            <button id="paper" class="icon-button">
+                <img class="gesture" src="Images/Paper.png">
+            </button>
+            <button id="scissors" class="icon-button">
+                <img class="gesture" src="Images/Scissors.png">
+            </button>
+        </div>
+        
+        <div id="result">
+            <div id="you">
+                <p>You</p>
+                <p id="youChoice"></p>
+            </div>
+            <div id="result-text"></div>
+            <div id="comp">
+                <p>Computer</p>
+                <p id="compChoice"></p>
+            </div>
+        </div>
+       
+        <div id="score">
+            Wins: 0, Losses: 0, Ties: 0
+        </div>
+        <button id="reset">Reset</button>
+    </div>
+
+    <script>
+        const objektyJson = {
+            0: "Rock",
+            1: "Paper",
+            2: "Scissors"
+        };
+        const objekty = Object.values(objektyJson);
+        let computerChoice;
+        let move;
+        let score = {
+            wins: 0,
+            losses: 0,
+            ties: 0
+        };
+
+        const compChoiceImg = function()
+        {
+            let img = document.createElement("img");
+            img.src = "Images/" + computerChoice + ".png";
+            img.style.width = "50px"
+            document.getElementById("compChoice").innerHTML = img.outerHTML;
+        }
+
+        const userChoiceImg = function(){
+            let img = document.createElement("img");
+            img.src = "Images/" + move + ".png";
+            img.style.width = "50px"
+            document.getElementById("youChoice").innerHTML = img.outerHTML;
+        }
+
+        const compChoiceFun = function(){
+            computerChoice = objekty[Math.floor(Math.random() * objekty.length)];
+            return computerChoice;
+        };
+
+        const winFun = function(computerChoice, move){
+            if (computerChoice == move) {
+                /* ----------------------------------------------------*/
+                document.getElementById("result-text").innerHTML = 
+                `Its a tie!`;
+                score.ties++;
+                compChoiceImg();
+                userChoiceImg();
+            } 
+            
+            else if (move == "Rock" && computerChoice == "Paper"|| 
+                    move == "Paper" && computerChoice == "Scissors" || 
+                    move == "Scissors" && computerChoice == "Rock") {
+                /* ----------------------------------------------------*/
+                document.getElementById("result-text").innerHTML = 
+                `You lose!`;
+                score.losses++;
+                compChoiceImg();
+                userChoiceImg();
+            } 
+            
+            else {
+                document.getElementById("result-text").innerHTML = 
+                `You win!`;
+                score.wins++;
+                compChoiceImg();
+                userChoiceImg();
+            }
+            return computerChoice;
+        };
+
+        document.getElementById("rock").onclick = function() {
+            let rock = "Rock";
+            move = rock;
+            computerChoice = compChoiceFun();
+            winFun(computerChoice, rock);
+            updateFun();
+        };
+        document.getElementById("paper").onclick = function() {
+            let paper = "Paper";
+            move = paper;
+            computerChoice = compChoiceFun();
+            winFun(computerChoice, paper);
+            updateFun();
+        };
+        document.getElementById("scissors").onclick = function() {
+            let scissors = "Scissors";
+            move = scissors;
+            computerChoice = compChoiceFun();
+            winFun(computerChoice, scissors);
+            updateFun();
+        };
+
+        document.getElementById("reset").onclick = function() {
+            score.wins = 0;
+            score.losses = 0;
+            score.ties = 0;
+            document.getElementById("score").innerHTML = 
+            `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+        };
+        
+        const updateFun = function() {
+            document.getElementById("score").innerHTML = 
+            `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+        };
+    </script>
+</body>
+</html>
